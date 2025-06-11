@@ -1,6 +1,6 @@
 class AppDefaults {
-  static const double padding = 16.0;
-  static const double margin = 16.0;
+  static const double padding = 6.0;
+  static const double margin = 26.0;
 }
 
 class AppImages {

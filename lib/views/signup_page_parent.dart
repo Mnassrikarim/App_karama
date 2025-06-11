@@ -36,7 +36,7 @@ class _AppLogoAndHeadline extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.3,
+          width: MediaQuery.of(context).size.width * 0.44,
           child: AspectRatio(
             aspectRatio: 1 / 1,
             child: Image.asset(
@@ -50,13 +50,6 @@ class _AppLogoAndHeadline extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppDefaults.padding),
-        Text(
-          'Inscription Parent',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-        ),
       ],
     );
   }
@@ -87,7 +80,6 @@ class _SignupFormState extends State<_SignupForm> {
       _successMessage = null;
     });
 
-    // Validate inputs
     if (_nomController.text.trim().isEmpty ||
         _prenomController.text.trim().isEmpty ||
         _emailController.text.trim().isEmpty ||
@@ -157,102 +149,168 @@ class _SignupFormState extends State<_SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
-      child: Column(
-        children: [
-          TextField(
-            controller: _nomController,
-            decoration: InputDecoration(
-              labelText: 'Nom',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+    return Center(
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue[900]!, Color.fromARGB(255, 247, 231, 112)!],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(AppDefaults.padding),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Inscription Parent',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                ),
+                const SizedBox(height: AppDefaults.margin),
+                Text(
+                  'Rejoignez l’aventure !',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+                const SizedBox(height: AppDefaults.margin * 2),
+                TextField(
+                  controller: _nomController,
+                  decoration: InputDecoration(
+                    hintText: 'Nom',
+                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: const Icon(Icons.person, color: Colors.grey),
+                  ),
+                ),
+                const SizedBox(height: AppDefaults.margin),
+                TextField(
+                  controller: _prenomController,
+                  decoration: InputDecoration(
+                    hintText: 'Prénom',
+                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: const Icon(Icons.person, color: Colors.grey),
+                  ),
+                ),
+                const SizedBox(height: AppDefaults.margin),
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: const Icon(Icons.email, color: Colors.grey),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: AppDefaults.margin),
+                TextField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    hintText: 'Mot de passe',
+                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                  ),
+                  obscureText: true,
+                ),
+                const SizedBox(height: AppDefaults.margin),
+                TextField(
+                  controller: _confirmPasswordController,
+                  decoration: InputDecoration(
+                    hintText: 'Confirmer le mot de passe',
+                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                  ),
+                  obscureText: true,
+                ),
+                const SizedBox(height: AppDefaults.margin),
+                TextField(
+                  controller: _numTellController,
+                  decoration: InputDecoration(
+                    hintText: 'Numéro de téléphone',
+                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: const Icon(Icons.phone, color: Colors.grey),
+                  ),
+                  keyboardType: TextInputType.phone,
+                ),
+                if (_errorMessage != null) ...[
+                  const SizedBox(height: AppDefaults.margin),
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ],
+                if (_successMessage != null) ...[
+                  const SizedBox(height: AppDefaults.margin),
+                  Text(
+                    _successMessage!,
+                    style: const TextStyle(color: Colors.green),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+                const SizedBox(height: AppDefaults.margin),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _signup,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[900],
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            'Inscription',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: AppDefaults.margin),
-          TextField(
-            controller: _prenomController,
-            decoration: InputDecoration(
-              labelText: 'Prénom',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
-          const SizedBox(height: AppDefaults.margin),
-          TextField(
-            controller: _emailController,
-            decoration: InputDecoration(
-              labelText: 'Email',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: AppDefaults.margin),
-          TextField(
-            controller: _passwordController,
-            decoration: InputDecoration(
-              labelText: 'Mot de passe',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            obscureText: true,
-          ),
-          const SizedBox(height: AppDefaults.margin),
-          TextField(
-            controller: _confirmPasswordController,
-            decoration: InputDecoration(
-              labelText: 'Confirmer le mot de passe',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            obscureText: true,
-          ),
-          const SizedBox(height: AppDefaults.margin),
-          TextField(
-            controller: _numTellController,
-            decoration: InputDecoration(
-              labelText: 'Numéro de téléphone',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            keyboardType: TextInputType.phone,
-          ),
-          if (_errorMessage != null) ...[
-            const SizedBox(height: AppDefaults.margin),
-            Text(
-              _errorMessage!,
-              style: const TextStyle(color: Colors.red),
-            ),
-          ],
-          if (_successMessage != null) ...[
-            const SizedBox(height: AppDefaults.margin),
-            Text(
-              _successMessage!,
-              style: const TextStyle(color: Colors.green),
-              textAlign: TextAlign.center,
-            ),
-          ],
-          const SizedBox(height: AppDefaults.margin),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _isLoading ? null : _signup,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: _isLoading
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('Inscription'),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -267,11 +325,25 @@ class _Footer extends StatelessWidget {
       children: [
         TextButton(
           onPressed: () => context.go('/login-parent'),
-          child: const Text(
-            'Vous avez déjà un compte ? Connectez-vous',
-            style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Vous avez déjà un compte ? ',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 14,
+                  ),
+                ),
+                TextSpan(
+                  text: 'Connectez-vous',
+                  style: TextStyle(
+                    color: Colors.blue[900],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

@@ -17,13 +17,10 @@ class OnboardingSlide extends StatelessWidget {
           height: MediaQuery.of(context).size.width,
           child: Padding(
             padding: const EdgeInsets.all(32.0),
-            child: CachedNetworkImage(
-              imageUrl: data.imageUrl,
+            child: Image.asset(
+              data.imageUrl,
               fit: BoxFit.contain,
-              placeholder: (context, url) => const Center(
-                child: CircularProgressIndicator(),
-              ),
-              errorWidget: (context, url, error) => const Icon(
+              errorBuilder: (context, error, stackTrace) => const Icon(
                 Icons.image_not_supported,
                 size: 100,
                 color: Colors.grey,

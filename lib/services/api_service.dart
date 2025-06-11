@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = 'https://karama-backend.onrender.com/api';
+  static const String baseUrl = 'https://kara-back.onrender.com/api';
   static const storage = FlutterSecureStorage();
 
   Future<Map<String, dynamic>> login(String email, String password) async {
@@ -66,6 +66,22 @@ class ApiService {
       final error =
           jsonDecode(response.body)['message'] ?? 'Erreur d\'inscription';
       throw Exception(error);
+    }
+  }
+
+  Future<String> resetPassword({required String identifier}) async {
+    final response = await http.post(
+      Uri.parse('https://kara-back.onrender.com/api/auth/reset-password'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'identifier': identifier}),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['message'] ??
+          'Lien de réinitialisation envoyé.';
+    } else {
+      throw Exception(jsonDecode(response.body)['message'] ??
+          'Échec de la réinitialisation.');
     }
   }
 

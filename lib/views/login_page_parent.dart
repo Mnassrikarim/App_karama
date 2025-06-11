@@ -36,7 +36,7 @@ class _AppLogoAndHeadline extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.3,
+          width: MediaQuery.of(context).size.width * 0.44,
           child: AspectRatio(
             aspectRatio: 1 / 1,
             child: Image.asset(
@@ -50,13 +50,6 @@ class _AppLogoAndHeadline extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppDefaults.padding),
-        Text(
-          'Connexion Parent',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-        ),
       ],
     );
   }
@@ -74,6 +67,7 @@ class _LoginFormState extends State<_LoginForm> {
   final _passwordController = TextEditingController();
   String? _errorMessage;
   bool _isLoading = false;
+  bool _rememberMe = false;
 
   Future<void> _login() async {
     setState(() {
@@ -93,8 +87,7 @@ class _LoginFormState extends State<_LoginForm> {
       }
 
       if (mounted) {
-        // Navigate to home page with user data
-        context.go('/home', extra: {
+        context.go('/home-parent', extra: {
           'role': result['role'],
           'nom': result['nom'],
           'prenom': result['prenom'],
@@ -119,52 +112,137 @@ class _LoginFormState extends State<_LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
-      child: Column(
-        children: [
-          TextField(
-            controller: _emailController,
-            decoration: InputDecoration(
-              labelText: 'Email',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+    return Center(
+      child: Card(
+        elevation: 8,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue[900]!, Color.fromARGB(255, 247, 231, 112)!],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            keyboardType: TextInputType.emailAddress,
+            borderRadius: BorderRadius.circular(16),
           ),
-          const SizedBox(height: AppDefaults.margin),
-          TextField(
-            controller: _passwordController,
-            decoration: InputDecoration(
-              labelText: 'Mot de passe',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+          child: Padding(
+            padding: const EdgeInsets.all(AppDefaults.padding),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Connexion Parent',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                ),
+                const SizedBox(height: AppDefaults.margin),
+                Text(
+                  'Bienvenue cher parent !',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+                const SizedBox(height: AppDefaults.margin * 2),
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    hintText: 'Email ici',
+                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: const Icon(Icons.email, color: Colors.grey),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: AppDefaults.margin),
+                TextField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    hintText: 'Mot de passe ici',
+                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                  ),
+                  obscureText: true,
+                ),
+                if (_errorMessage != null) ...[
+                  const SizedBox(height: AppDefaults.margin),
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ],
+                const SizedBox(height: AppDefaults.margin),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: _rememberMe,
+                            onChanged: (value) {
+                              setState(() {
+                                _rememberMe = value ?? false;
+                              });
+                            },
+                            activeColor: Colors.blue[900],
+                          ),
+                          const Text(
+                            'Se souvenir de moi',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => context.go('/reset-password'),
+                        child: const Text(
+                          'Mot de passe oublié ?',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 6, 73, 128),
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppDefaults.margin),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _login,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[900],
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            'Connexion',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                  ),
+                ),
+              ],
             ),
-            obscureText: true,
           ),
-          if (_errorMessage != null) ...[
-            const SizedBox(height: AppDefaults.margin),
-            Text(
-              _errorMessage!,
-              style: const TextStyle(color: Colors.red),
-            ),
-          ],
-          const SizedBox(height: AppDefaults.margin),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _isLoading ? null : _login,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: _isLoading
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('Connexion'),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -179,11 +257,36 @@ class _Footer extends StatelessWidget {
       children: [
         TextButton(
           onPressed: () => context.go('/signup-parent'),
-          child: const Text(
-            'Vous pouvez créer un compte',
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Pas encore de compte ? ',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 14,
+                  ),
+                ),
+                TextSpan(
+                  text: 'Inscrivez-vous !',
+                  style: TextStyle(
+                    color: Colors.blue[900],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: AppDefaults.margin),
+        TextButton(
+          onPressed: () => context.go('/intro'),
+          child: Text(
+            'Retour',
             style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
+              color: Colors.blue[900],
+              fontSize: 14,
             ),
           ),
         ),

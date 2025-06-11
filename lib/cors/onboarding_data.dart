@@ -3,7 +3,7 @@ import 'onboarding_model.dart';
 class OnboardingData {
   static final List<OnboardingModel> items = [
     OnboardingModel(
-      imageUrl: 'assets/images/gif/ddd2.gif',
+      imageUrl: 'assets/images/gif/out.gif',
       headline: 'Bienvenue dans notre application !',
       description:
           'Une plateforme amusante pour les enfants et les parents afin de suivre les cours et l’apprentissage scolaire.',
